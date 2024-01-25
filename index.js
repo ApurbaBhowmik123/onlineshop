@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
-require('./db/config');
+const dataase = require('./db/config');
 const User = require("./db/User");
+const cart = require("./db/cart");
 const Shopsadd = require("./db/Shopsadd")
 const Products = require("./db/Products")
 const multer = require('multer')
@@ -16,7 +17,7 @@ const Shop = require("./db/Shop");
 // const path = require('path');
 // app.use(express.static('images'));
 app.use(fileUpload())
-
+dataase ()
 cloudinary.config({
     cloud_name: 'deftpdfga',
     api_key: '675153757725399',
@@ -280,7 +281,26 @@ app.get('/suggestshops/:shopId', async (req, res) => {
     }
 });
 
+// Define the cart schema
 
+
+  app.get('/api/cart/:_id', async (req, res) => {
+    try {
+      const { _id } = req.params;
+  
+      // Find the user by ID in the database
+      const user = await User.findById(_id);
+  
+      if (user) {
+        res.json({ items: user.cart });
+      } else {
+        res.status(404).json({ error: 'User not found' });
+      }
+    } catch (error) {
+      console.error('Error fetching cart data:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
 
 app.listen(5000, () => {
     console.log('app is running on port 5000')

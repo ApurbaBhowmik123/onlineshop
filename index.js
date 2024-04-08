@@ -25,19 +25,20 @@ cloudinary.config({
 });
 // const images=require("../backend/image")
 
-const allowedaorgins = ['http://localhost:3000']
+const allowedaorgins = ['http://localhost:3001']
 const corsOptions = {
     origin: function (origin, callback) {
         if (!origin || allowedaorgins.indexOf(origin) !== -1) {
             callback(null, true)
         } else {
-            callback(new Error('not allow by cors plicy'))
+            callback(new Error('not allow by cors policy'))
         }
     },
     methods: "GET, HEAD, PUT,PATCH, POST, DELETE",
     Credentials: true
 }
 app.use(cors(corsOptions));
+
 
 
 app.post("/signup", async (req, res) => {
